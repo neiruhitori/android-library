@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Perpustakaan</string>
+    <string name="app_logo">App Logo</string>
+    <string name="book_cover">Book Cover</string>
+    <string name="search_hint">Cari buku...</string>
+    <string name="welcome_text">Selamat Datang di Perpustakaan Digital</string>
+    <string name="tap_to_continue">Ketuk di mana saja untuk melanjutkan</string>
 </resources>

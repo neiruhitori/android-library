@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base Theme -->
+    <style name="Theme.Perpustakaan" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/purple_primary</item>
+        <item name="colorPrimaryDark">@color/purple_dark</item>
+        <item name="colorAccent">@color/green_accent</item>
+        <item name="android:statusBarColor">@color/purple_dark</item>
+        <item name="android:navigationBarColor">@color/background_dark</item>
+        <item name="android:windowBackground">@color/background_dark</item>
+    </style>
 
-    <style name="Theme.Perpustakaan" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- No Action Bar Theme -->
+    <style name="Theme.Perpustakaan.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/purple_dark</item>
+    </style>
 </resources>
