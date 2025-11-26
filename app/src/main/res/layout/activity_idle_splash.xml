@@ -4,13 +4,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient_blue">
+    android:clickable="true"
+    android:focusable="true">
 
-    <!-- Logo Utama - Besar di tengah -->
+    <!-- Background Image dengan Animasi Loop -->
+    <ImageView
+        android:id="@+id/ivBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo_smpn2"
+        android:alpha="0.3"
+        android:contentDescription="Background Logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Gradient Overlay untuk readability -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient_blue"
+        android:alpha="0.7" />
+
+    <!-- Logo Statis di tengah -->
     <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:src="@drawable/logo_smpn2"
         android:contentDescription="Logo SMP Negeri 2"
         android:scaleType="fitCenter"
@@ -71,37 +93,38 @@
 
     </LinearLayout>
 
-    <!-- Loading indicator modern -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="200dp"
-        android:layout_height="4dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/white"
-        android:alpha="0.7"
+    <!-- Tap to continue dengan animasi berkedip -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
         android:layout_marginBottom="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- Decorative elements -->
-    <View
-        android:layout_width="60dp"
-        android:layout_height="3dp"
-        android:background="@color/white"
-        android:alpha="0.5"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/progressBar"
-        app:layout_constraintStart_toStartOf="@id/progressBar" />
+        <!-- Icon Touch -->
+        <ImageView
+            android:id="@+id/ivTouchIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:tint="@color/white"
+            android:alpha="0.7"
+            android:contentDescription="Tap Icon" />
 
-    <View
-        android:layout_width="60dp"
-        android:layout_height="3dp"
-        android:background="@color/white"
-        android:alpha="0.5"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/progressBar"
-        app:layout_constraintEnd_toEndOf="@id/progressBar" />
+        <TextView
+            android:id="@+id/tvTapToContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ketuk layar untuk melanjutkan"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:alpha="0.8"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

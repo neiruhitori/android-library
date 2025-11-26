@@ -27,6 +27,18 @@ data class Buku(
     @SerializedName("foto_url")
     val fotoUrl: String?,
     
+    @SerializedName("stok")
+    val stok: Int = 0,
+    
+    @SerializedName("stok_tersedia")
+    val stokTersedia: Int = 0,
+    
+    @SerializedName("sedang_dipinjam")
+    val sedangDipinjam: Int = 0,
+    
+    @SerializedName("total_peminjaman")
+    val totalPeminjaman: Int = 0,
+    
     @SerializedName("created_at")
     val createdAt: String?,
     

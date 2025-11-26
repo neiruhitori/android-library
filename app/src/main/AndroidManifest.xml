@@ -41,6 +41,20 @@
             android:exported="false"
             android:theme="@style/Theme.Perpustakaan.NoActionBar" />
         
+        <!-- Buku Kategori Activity -->
+        <activity
+            android:name=".activity.BukuKategoriActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Perpustakaan.NoActionBar"
+            android:parentActivityName=".activity.DashboardActivity" />
+        
+        <!-- Idle Splash Activity (muncul saat tidak ada aktivitas 3 menit) -->
+        <activity
+            android:name=".activity.IdleSplashActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Perpustakaan.NoActionBar"
+            android:launchMode="singleTop" />
+        
         <!-- Main Activity (Optional) -->
         <activity
             android:name=".MainActivity"

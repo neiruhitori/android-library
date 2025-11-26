@@ -1,0 +1,204 @@
+package com.example.perpustakaan.activity
+
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.perpustakaan.adapter.BukuAdapter
+import com.example.perpustakaan.databinding.ActivityBukuKategoriBinding
+import com.example.perpustakaan.model.Buku
+import com.example.perpustakaan.network.RetrofitClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+class BukuKategoriActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityBukuKategoriBinding
+    private lateinit var bukuAdapter: BukuAdapter
+    private var allBuku = listOf<Buku>()
+    private var filteredBuku = listOf<Buku>()
+    private var kategori: String = "harian"
+    
+    // Pagination
+    private var currentPage = 1
+    private val itemsPerPage = 12
+    private var totalPages = 1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityBukuKategoriBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Get kategori dari intent
+        kategori = intent.getStringExtra("KATEGORI") ?: "harian"
+        val isPopular = intent.getBooleanExtra("IS_POPULAR", false)
+
+        // Setup toolbar
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        
+        val title = when {
+            isPopular -> "Buku Paling Banyak Dipinjam"
+            kategori == "harian" -> "Buku Harian"
+            kategori == "tahunan" -> "Buku Tahunan"
+            else -> "Semua Buku"
+        }
+        supportActionBar?.title = title
+
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
+        setupRecyclerView()
+        setupSearchBox()
+        setupPagination()
+        loadBuku(isPopular)
+    }
+
+    private fun setupRecyclerView() {
+        bukuAdapter = BukuAdapter(
+            onItemClick = { buku ->
+                // Navigate to detail
+                val intent = android.content.Intent(this, DetailBukuActivity::class.java)
+                intent.putExtra("BUKU_ID", buku.id)
+                startActivity(intent)
+            },
+            showPopularBadge = false
+        )
+
+        binding.rvBuku.apply {
+            layoutManager = GridLayoutManager(this@BukuKategoriActivity, 2)
+            adapter = bukuAdapter
+        }
+    }
+
+    private fun setupSearchBox() {
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filterBuku(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+    }
+
+    private fun setupPagination() {
+        binding.btnPrevPage.setOnClickListener {
+            if (currentPage > 1) {
+                currentPage--
+                updatePage()
+            }
+        }
+
+        binding.btnNextPage.setOnClickListener {
+            if (currentPage < totalPages) {
+                currentPage++
+                updatePage()
+            }
+        }
+    }
+
+    private fun loadBuku(isPopular: Boolean) {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.rvBuku.visibility = View.GONE
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitClient.apiService.getAllBuku()
+                
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = View.GONE
+                    
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        val data = response.body()?.data ?: emptyList()
+                        
+                        // Filter berdasarkan kategori atau popular
+                        allBuku = if (isPopular) {
+                            data.sortedByDescending { it.totalPeminjaman }
+                        } else {
+                            data.filter { it.tipe == kategori }
+                        }
+                        
+                        filteredBuku = allBuku
+                        updatePage()
+                        
+                        if (allBuku.isEmpty()) {
+                            showEmptyState(true)
+                        }
+                    } else {
+                        showError("Gagal memuat data buku")
+                    }
+                }
+                
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = View.GONE
+                    showError("Error: ${e.message}")
+                }
+            }
+        }
+    }
+
+    private fun filterBuku(query: String) {
+        filteredBuku = if (query.isEmpty()) {
+            allBuku
+        } else {
+            allBuku.filter {
+                it.judul.contains(query, ignoreCase = true) ||
+                        it.penulis.contains(query, ignoreCase = true)
+            }
+        }
+        
+        currentPage = 1
+        updatePage()
+    }
+
+    private fun updatePage() {
+        totalPages = (filteredBuku.size + itemsPerPage - 1) / itemsPerPage
+        
+        if (totalPages == 0) totalPages = 1
+
+        val startIndex = (currentPage - 1) * itemsPerPage
+        val endIndex = minOf(startIndex + itemsPerPage, filteredBuku.size)
+        
+        val pageData = if (filteredBuku.isNotEmpty()) {
+            filteredBuku.subList(startIndex, endIndex)
+        } else {
+            emptyList()
+        }
+
+        bukuAdapter.updateData(pageData)
+        
+        // Update UI
+        binding.rvBuku.visibility = if (pageData.isNotEmpty()) View.VISIBLE else View.GONE
+        binding.tvInfoHeader.text = "Menampilkan ${pageData.size} dari ${filteredBuku.size} buku"
+        binding.tvPageInfo.text = "Halaman $currentPage dari $totalPages"
+        
+        // Update pagination buttons
+        binding.btnPrevPage.isEnabled = currentPage > 1
+        binding.btnNextPage.isEnabled = currentPage < totalPages
+        
+        // Show/hide pagination
+        binding.paginationLayout.visibility = if (totalPages > 1) View.VISIBLE else View.GONE
+        
+        // Show empty state if no data
+        showEmptyState(pageData.isEmpty())
+        
+        // Scroll to top
+        binding.scrollView.smoothScrollTo(0, 0)
+    }
+
+    private fun showEmptyState(show: Boolean) {
+        binding.emptyStateLayout.visibility = if (show) View.VISIBLE else View.GONE
+        binding.rvBuku.visibility = if (show) View.GONE else View.VISIBLE
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+}

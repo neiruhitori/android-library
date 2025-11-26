@@ -1,31 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Theme Colors - Dark Purple Theme -->
-    <color name="purple_primary">#5B4E8B</color>
-    <color name="purple_dark">#3D3557</color>
-    <color name="purple_light">#7B6BA8</color>
+    <!-- Theme Colors - Blue & White Theme -->
+    <color name="blue_primary">#5B6FED</color>
+    <color name="blue_dark">#4756C7</color>
+    <color name="blue_light">#7B8EFF</color>
+    <color name="blue_accent">#4756C7</color>
     
     <!-- Background Colors -->
-    <color name="background_dark">#2A2438</color>
-    <color name="card_background">#3D3557</color>
-    <color name="splash_background">#5B4E8B</color>
+    <color name="background_light">#F5F7FA</color>
+    <color name="background_white">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="splash_background">#5B6FED</color>
     
-    <!-- Accent Colors -->
-    <color name="green_accent">#4FFFB0</color>
-    <color name="green_light">#6FFFC5</color>
+    <!-- Category Colors -->
+    <color name="category_bg_1">#EEF0FF</color>
+    <color name="category_bg_2">#FFF4E6</color>
+    <color name="category_bg_3">#FFE6F0</color>
+    <color name="category_bg_4">#E6F7FF</color>
+    
+    <!-- Status Colors -->
+    <color name="status_available">#4CAF50</color>
+    <color name="status_limited">#4CAF50</color>
+    <color name="status_limited_bg">#4CAF50</color>
+    <color name="status_unavailable">#F44336</color>
     
     <!-- Text Colors -->
-    <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#B8B3C8</color>
-    <color name="text_hint">#8A8495</color>
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_hint">#9CA3AF</color>
+    <color name="text_white">#FFFFFF</color>
     
     <!-- Standard Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey_light">#E0E0E0</color>
     <color name="grey_dark">#757575</color>
+    <color name="grey_bg">#F5F5F5</color>
+    
+    <!-- Accent Colors -->
+    <color name="green_accent">#4CAF50</color>
+    <color name="orange_accent">#FF9800</color>
+    <color name="red_accent">#F44336</color>
     
     <!-- Legacy Colors -->
+    <color name="purple_primary">#5B4E8B</color>
+    <color name="purple_dark">#3D3557</color>
+    <color name="purple_light">#7B6BA8</color>
+    <color name="background_dark">#2A2438</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

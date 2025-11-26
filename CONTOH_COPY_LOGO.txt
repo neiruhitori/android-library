@@ -1,0 +1,17 @@
+# Contoh Copy Logo SMPN2 - PowerShell Commands
+
+## Jika file logo ada di Desktop
+Copy-Item "C:\Users\$env:USERNAME\Desktop\logo_smpn2.png" -Destination "D:\AndoidStudio\Perpustakaan\app\src\main\res\drawable\logo_smpn2.png"
+
+## Jika file logo ada di Downloads
+Copy-Item "C:\Users\$env:USERNAME\Downloads\logo_smpn2.png" -Destination "D:\AndoidStudio\Perpustakaan\app\src\main\res\drawable\logo_smpn2.png"
+
+## Jika file logo ada di Documents
+Copy-Item "C:\Users\$env:USERNAME\Documents\logo_smpn2.png" -Destination "D:\AndoidStudio\Perpustakaan\app\src\main\res\drawable\logo_smpn2.png"
+
+## Manual - Ganti PATH_KE_LOGO dengan lokasi file Anda
+Copy-Item "PATH_KE_LOGO\nama_file.png" -Destination "D:\AndoidStudio\Perpustakaan\app\src\main\res\drawable\logo_smpn2.png"
+
+## Setelah copy, build aplikasi:
+cd D:\AndoidStudio\Perpustakaan
+.\gradlew clean assembleDebug installDebug

@@ -3,7 +3,7 @@ package com.example.perpustakaan.activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.perpustakaan.R
@@ -11,7 +11,7 @@ import com.example.perpustakaan.databinding.ActivityDetailBukuBinding
 import com.example.perpustakaan.network.RetrofitClient
 import kotlinx.coroutines.launch
 
-class DetailBukuActivity : AppCompatActivity() {
+class DetailBukuActivity : BaseActivity() {
     
     private lateinit var binding: ActivityDetailBukuBinding
     private var bukuId: Int = 0
@@ -58,10 +58,42 @@ class DetailBukuActivity : AppCompatActivity() {
                         binding.tvBukuJudul.text = buku.judul
                         binding.tvBukuPenulis.text = buku.penulis
                         binding.tvBukuTahun.text = buku.tahunTerbit.toString()
-                        binding.tvBukuTipe.text = buku.tipe.capitalize()
+                        binding.tvBukuTipe.text = buku.tipe.replaceFirstChar { it.uppercase() }
                         binding.tvBukuDescription.text = buku.description
                         
-                        // Load image - gunakan foto_url dari API
+                        // Set stock information
+                        binding.tvTotalStok.text = "${buku.stok} buku"
+                        binding.tvSedangDipinjam.text = "${buku.sedangDipinjam} buku"
+                        
+                        // Set stock status badge
+                        when {
+                            buku.stokTersedia <= 0 -> {
+                                binding.tvStokStatus.text = "Stok Habis"
+                                binding.tvStokStatus.setTextColor(
+                                    ContextCompat.getColor(this@DetailBukuActivity, android.R.color.white)
+                                )
+                                binding.layoutStokStatus.setBackgroundResource(R.drawable.bg_badge_unavailable)
+                            }
+                            else -> {
+                                binding.tvStokStatus.text = "${buku.stokTersedia} Buku Tersisa"
+                                binding.tvStokStatus.setTextColor(
+                                    ContextCompat.getColor(this@DetailBukuActivity, android.R.color.white)
+                                )
+                                binding.layoutStokStatus.setBackgroundResource(R.drawable.bg_badge_limited)
+                            }
+                        }
+                        
+                        // Set total peminjaman
+                        binding.tvTotalPeminjaman.text = "Total dipinjam: ${buku.totalPeminjaman} kali"
+                        
+                        // Show/hide statistics card
+                        binding.cvStatistics.visibility = if (buku.totalPeminjaman > 0) {
+                            View.VISIBLE
+                        } else {
+                            View.GONE
+                        }
+                        
+                        // Load image
                         val imageUrl = buku.fotoUrl ?: buku.foto
                         Glide.with(this@DetailBukuActivity)
                             .load(imageUrl)
