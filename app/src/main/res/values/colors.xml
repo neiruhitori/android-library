@@ -39,8 +39,11 @@
     
     <!-- Accent Colors -->
     <color name="green_accent">#4CAF50</color>
+    <color name="green_success">#4CAF50</color>
     <color name="orange_accent">#FF9800</color>
     <color name="red_accent">#F44336</color>
+    <color name="red_error">#F44336</color>
+    <color name="stroke_light">#E0E0E0</color>
     
     <!-- Legacy Colors -->
     <color name="purple_primary">#5B4E8B</color>

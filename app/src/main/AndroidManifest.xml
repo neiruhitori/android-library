@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -47,6 +51,41 @@
             android:exported="false"
             android:theme="@style/Theme.Perpustakaan.NoActionBar"
             android:parentActivityName=".activity.DashboardActivity" />
+        
+        <!-- Cart Activity -->
+        <activity
+            android:name=".activity.CartActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Perpustakaan.NoActionBar"
+            android:parentActivityName=".activity.DashboardActivity" />
+        
+        <!-- Student Selection Activity -->
+        <activity
+            android:name=".activity.StudentSelectionActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Perpustakaan.NoActionBar"
+            android:parentActivityName=".activity.CartActivity" />
+        
+        <!-- QR Scanner Activity -->
+        <activity
+            android:name=".activity.QRScannerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Perpustakaan.NoActionBar"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activity.StudentSelectionActivity" />
+        
+        <!-- Manual Student Input Activity -->
+        <activity
+            android:name=".activity.ManualStudentInputActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Perpustakaan.NoActionBar"
+            android:parentActivityName=".activity.StudentSelectionActivity" />
+        
+        <!-- Checkout Activity -->
+        <activity
+            android:name=".activity.CheckoutActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Perpustakaan.NoActionBar" />
         
         <!-- Idle Splash Activity (muncul saat tidak ada aktivitas 3 menit) -->
         <activity

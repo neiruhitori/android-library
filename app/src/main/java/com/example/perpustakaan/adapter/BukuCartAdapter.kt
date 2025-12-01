@@ -3,24 +3,23 @@ package com.example.perpustakaan.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.perpustakaan.R
-import com.example.perpustakaan.databinding.ItemBukuGridBinding
+import com.example.perpustakaan.databinding.ItemBukuCartBinding
 import com.example.perpustakaan.model.Buku
 import com.example.perpustakaan.network.CartManager
 
-class BukuAdapter(
+class BukuCartAdapter(
     private val onItemClick: (Buku) -> Unit,
     private val showPopularBadge: Boolean = false
-) : ListAdapter<Buku, BukuAdapter.BukuViewHolder>(BukuDiffCallback()) {
+) : ListAdapter<Buku, BukuCartAdapter.BukuViewHolder>(BukuDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BukuViewHolder {
-        val binding = ItemBukuGridBinding.inflate(
+        val binding = ItemBukuCartBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -32,13 +31,12 @@ class BukuAdapter(
         holder.bind(getItem(position))
     }
     
-    // Method untuk update data (digunakan di BukuKategoriActivity)
     fun updateData(newData: List<Buku>) {
         submitList(newData)
     }
 
     inner class BukuViewHolder(
-        private val binding: ItemBukuGridBinding
+        private val binding: ItemBukuCartBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(buku: Buku) {
@@ -82,65 +80,57 @@ class BukuAdapter(
                     View.GONE
                 }
 
-                // Get current quantity from cart
-                val currentQuantity = CartManager.getQuantity(buku.id)
-                updateQuantityUI(currentQuantity)
-
-                // Button Add - Show ketika quantity = 0
-                btnAdd.setOnClickListener {
-                    if (buku.stokTersedia <= 0) {
-                        Toast.makeText(itemView.context, "Stok habis", Toast.LENGTH_SHORT).show()
-                        return@setOnClickListener
-                    }
-                    
-                    CartManager.addItem(buku)
-                    updateQuantityUI(1)
-                    Toast.makeText(itemView.context, "${buku.judul} ditambahkan ke keranjang", Toast.LENGTH_SHORT).show()
+                // Update UI based on cart state
+                val isInCart = CartManager.isInCart(buku.id)
+                val quantity = CartManager.getQuantity(buku.id)
+                
+                if (isInCart) {
+                    layoutQuantityControl.visibility = View.VISIBLE
+                    btnAddToCart.visibility = View.GONE
+                    tvQuantity.text = quantity.toString()
+                } else {
+                    layoutQuantityControl.visibility = View.GONE
+                    btnAddToCart.visibility = View.VISIBLE
                 }
 
-                // Button Increase
+                // Disable buttons if stock is empty
+                val hasStock = buku.stokTersedia > 0
+                btnAddToCart.isEnabled = hasStock
+                btnIncrease.isEnabled = hasStock && quantity < buku.stokTersedia
+
+                // Add to cart button click
+                btnAddToCart.setOnClickListener {
+                    if (hasStock) {
+                        CartManager.addItem(buku)
+                        notifyItemChanged(adapterPosition)
+                    }
+                }
+
+                // Increase quantity
                 btnIncrease.setOnClickListener {
-                    val currentQty = CartManager.getQuantity(buku.id)
-                    val newQuantity = currentQty + 1
-                    if (newQuantity > buku.stokTersedia) {
-                        Toast.makeText(
-                            itemView.context,
-                            "Maksimal ${buku.stokTersedia} buku tersedia",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@setOnClickListener
+                    if (quantity < buku.stokTersedia) {
+                        CartManager.increaseQuantity(buku.id, buku.stokTersedia)
+                        tvQuantity.text = CartManager.getQuantity(buku.id).toString()
+                        btnIncrease.isEnabled = CartManager.getQuantity(buku.id) < buku.stokTersedia
                     }
-                    
-                    CartManager.increaseQuantity(buku.id, buku.stokTersedia)
-                    updateQuantityUI(newQuantity)
                 }
 
-                // Button Decrease
+                // Decrease quantity
                 btnDecrease.setOnClickListener {
                     CartManager.decreaseQuantity(buku.id)
                     val newQuantity = CartManager.getQuantity(buku.id)
-                    updateQuantityUI(newQuantity)
-                    
                     if (newQuantity == 0) {
-                        Toast.makeText(itemView.context, "${buku.judul} dihapus dari keranjang", Toast.LENGTH_SHORT).show()
+                        notifyItemChanged(adapterPosition)
+                    } else {
+                        tvQuantity.text = newQuantity.toString()
+                        btnIncrease.isEnabled = newQuantity < buku.stokTersedia
                     }
                 }
 
-                // Click on card -> detail
+                // Item click for details
                 root.setOnClickListener {
                     onItemClick(buku)
                 }
-            }
-        }
-
-        private fun ItemBukuGridBinding.updateQuantityUI(quantity: Int) {
-            if (quantity > 0) {
-                btnAdd.visibility = View.GONE
-                layoutQuantityControls.visibility = View.VISIBLE
-                tvQuantity.text = quantity.toString()
-            } else {
-                btnAdd.visibility = View.VISIBLE
-                layoutQuantityControls.visibility = View.GONE
             }
         }
     }

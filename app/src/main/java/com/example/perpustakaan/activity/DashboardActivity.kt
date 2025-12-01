@@ -37,6 +37,7 @@ class DashboardActivity : BaseActivity() {
         setupRecyclerViews()
         setupSearchView()
         setupSwipeRefresh()
+        setupCartButton()
         loadBuku()
     }
     
@@ -230,5 +231,32 @@ class DashboardActivity : BaseActivity() {
     
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+    
+    private fun setupCartButton() {
+        // Set click listener untuk FAB cart
+        binding.fabCart.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+        
+        // Update cart badge
+        updateCartBadge()
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Update cart badge setiap kali activity resume
+        updateCartBadge()
+    }
+    
+    private fun updateCartBadge() {
+        val totalItems = com.example.perpustakaan.network.CartManager.getTotalItems()
+        if (totalItems > 0) {
+            binding.tvCartBadge.visibility = View.VISIBLE
+            binding.tvCartBadge.text = if (totalItems > 99) "99+" else totalItems.toString()
+        } else {
+            binding.tvCartBadge.visibility = View.GONE
+        }
     }
 }
