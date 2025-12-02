@@ -1,8 +1,12 @@
 package com.example.perpustakaan.activity
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.perpustakaan.databinding.ActivityQrScannerBinding
 import com.example.perpustakaan.network.RetrofitClient
@@ -16,14 +20,56 @@ class QRScannerActivity : BaseActivity() {
 
     private lateinit var binding: ActivityQrScannerBinding
     private var isScanning = true
+    
+    companion object {
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 100
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityQrScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupScanner()
         setupListeners()
+        checkCameraPermission()
+    }
+    
+    private fun checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            == PackageManager.PERMISSION_GRANTED) {
+            // Permission already granted
+            setupScanner()
+        } else {
+            // Request permission
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+    
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+                setupScanner()
+            } else {
+                // Permission denied
+                Toast.makeText(
+                    this,
+                    "Izin kamera diperlukan untuk scan QR Code",
+                    Toast.LENGTH_LONG
+                ).show()
+                finish()
+            }
+        }
     }
 
     private fun setupScanner() {
