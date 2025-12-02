@@ -1,5 +1,6 @@
 package com.example.perpustakaan.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -37,26 +38,52 @@ class BukuKategoriActivity : BaseActivity() {
         kategori = intent.getStringExtra("KATEGORI") ?: "harian"
         val isPopular = intent.getBooleanExtra("IS_POPULAR", false)
 
-        // Setup toolbar
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        
+        // Setup title
         val title = when {
             isPopular -> "Buku Paling Banyak Dipinjam"
             kategori == "harian" -> "Buku Harian"
             kategori == "tahunan" -> "Buku Tahunan"
             else -> "Semua Buku"
         }
-        supportActionBar?.title = title
+        binding.tvCategoryTitle.text = title
 
-        binding.toolbar.setNavigationOnClickListener {
+        // Setup back button
+        binding.btnBack.setOnClickListener {
             finish()
         }
 
         setupRecyclerView()
         setupSearchBox()
         setupPagination()
+        setupCartButton()
         loadBuku(isPopular)
+    }
+    
+    private fun setupCartButton() {
+        // Set click listener untuk FAB cart
+        binding.fabCart.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+        
+        // Update cart badge
+        updateCartBadge()
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Update cart badge setiap kali activity resume
+        updateCartBadge()
+    }
+    
+    private fun updateCartBadge() {
+        val totalItems = com.example.perpustakaan.network.CartManager.getTotalItems()
+        if (totalItems > 0) {
+            binding.tvCartBadge.visibility = View.VISIBLE
+            binding.tvCartBadge.text = if (totalItems > 99) "99+" else totalItems.toString()
+        } else {
+            binding.tvCartBadge.visibility = View.GONE
+        }
     }
 
     private fun setupRecyclerView() {

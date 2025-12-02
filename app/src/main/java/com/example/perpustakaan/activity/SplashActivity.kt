@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.example.perpustakaan.R
@@ -18,6 +19,9 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        // Keep screen awake - layar tidak sleep
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         
         // Hide action bar
         supportActionBar?.hide()
@@ -49,6 +53,12 @@ class SplashActivity : AppCompatActivity() {
         val intent = Intent(this, DashboardActivity::class.java)
         startActivity(intent)
         finish()
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clear screen awake flag
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
     
     @Suppress("DEPRECATION")
