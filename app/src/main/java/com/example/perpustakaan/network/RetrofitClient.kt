@@ -9,11 +9,11 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
     
     // Menggunakan IP WiFi komputer - untuk LDPlayer
-    private const val BASE_URL = "http://172.20.10.3:8000/"
+    private const val BASE_URL = "http://192.168.137.1:8000/"
     
     // Jika tidak berhasil, coba opsi lain:
     // private const val BASE_URL = "http://10.0.2.2:8000/"  // Untuk emulator standar
-    // private const val BASE_URL = "http://192.168.137.1:8000/"  // IP lokal lainnya 
+    // private const val BASE_URL = "http://172.20.10.3:8000/"  // IP WiFi lainnya 
     
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

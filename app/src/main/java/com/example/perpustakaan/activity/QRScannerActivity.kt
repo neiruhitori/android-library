@@ -13,6 +13,7 @@ import com.example.perpustakaan.network.RetrofitClient
 import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
+import com.journeyapps.barcodescanner.camera.CameraSettings
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
@@ -20,6 +21,7 @@ class QRScannerActivity : BaseActivity() {
 
     private lateinit var binding: ActivityQrScannerBinding
     private var isScanning = true
+    private var isUsingFrontCamera = true // Default menggunakan kamera depan
     
     companion object {
         private const val CAMERA_PERMISSION_REQUEST_CODE = 100
@@ -73,6 +75,15 @@ class QRScannerActivity : BaseActivity() {
     }
 
     private fun setupScanner() {
+        // Konfigurasi kamera
+        val settings = CameraSettings()
+        if (isUsingFrontCamera) {
+            settings.requestedCameraId = 1 // Front camera
+        } else {
+            settings.requestedCameraId = 0 // Back camera
+        }
+        binding.barcodeScanner.cameraSettings = settings
+        
         binding.barcodeScanner.decodeContinuous(object : BarcodeCallback {
             override fun barcodeResult(result: BarcodeResult?) {
                 if (!isScanning) return
@@ -93,6 +104,32 @@ class QRScannerActivity : BaseActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+        
+        // Tombol untuk switch camera
+        binding.btnSwitchCamera.setOnClickListener {
+            switchCamera()
+        }
+    }
+    
+    private fun switchCamera() {
+        isUsingFrontCamera = !isUsingFrontCamera
+        
+        // Pause scanner sebelum switch
+        binding.barcodeScanner.pause()
+        
+        // Update camera settings
+        val settings = CameraSettings()
+        if (isUsingFrontCamera) {
+            settings.requestedCameraId = 1 // Front camera
+            Toast.makeText(this, "Beralih ke kamera depan", Toast.LENGTH_SHORT).show()
+        } else {
+            settings.requestedCameraId = 0 // Back camera
+            Toast.makeText(this, "Beralih ke kamera belakang", Toast.LENGTH_SHORT).show()
+        }
+        binding.barcodeScanner.cameraSettings = settings
+        
+        // Resume scanner dengan kamera baru
+        binding.barcodeScanner.resume()
     }
 
     private fun processQRCode(qrContent: String) {
