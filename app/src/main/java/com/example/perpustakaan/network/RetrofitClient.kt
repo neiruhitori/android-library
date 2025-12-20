@@ -8,10 +8,11 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
     
-    // Menggunakan IP WiFi komputer - untuk LDPlayer
-    private const val BASE_URL = "http://192.168.137.1:8000/"
+    // Base URL untuk production - website yang sudah di hosting
+    private const val BASE_URL = "https://perpustakaan-smpn2klakah.my.id/"
     
-    // Jika tidak berhasil, coba opsi lain:
+    // Untuk testing lokal, uncomment salah satu dibawah:
+    // private const val BASE_URL = "http://192.168.137.1:8000/"  // IP WiFi komputer - untuk LDPlayer
     // private const val BASE_URL = "http://10.0.2.2:8000/"  // Untuk emulator standar
     // private const val BASE_URL = "http://172.20.10.3:8000/"  // IP WiFi lainnya 
     
