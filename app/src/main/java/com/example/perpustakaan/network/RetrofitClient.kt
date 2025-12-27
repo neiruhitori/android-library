@@ -4,7 +4,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 object RetrofitClient {
     
@@ -20,7 +24,30 @@ object RetrofitClient {
         level = HttpLoggingInterceptor.Level.BODY
     }
     
-    private val okHttpClient = OkHttpClient.Builder()
+    // Trust all certificates (untuk development, JANGAN gunakan di production)
+    private fun getUnsafeOkHttpClient(): OkHttpClient.Builder {
+        try {
+            val trustAllCerts = arrayOf<TrustManager>(
+                object : X509TrustManager {
+                    override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
+                    override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
+                    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+                }
+            )
+
+            val sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, trustAllCerts, java.security.SecureRandom())
+            val sslSocketFactory = sslContext.socketFactory
+
+            return OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+                .hostnameVerifier { _, _ -> true }
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+    }
+    
+    private val okHttpClient = getUnsafeOkHttpClient()
         .addInterceptor(loggingInterceptor)
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)

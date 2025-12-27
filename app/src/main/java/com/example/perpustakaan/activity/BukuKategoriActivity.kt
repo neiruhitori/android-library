@@ -136,13 +136,19 @@ class BukuKategoriActivity : BaseActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                android.util.Log.d("BukuKategori", "Starting API call to getAllBuku()")
                 val response = RetrofitClient.apiService.getAllBuku()
+                
+                android.util.Log.d("BukuKategori", "Response code: ${response.code()}")
+                android.util.Log.d("BukuKategori", "Response message: ${response.message()}")
                 
                 withContext(Dispatchers.Main) {
                     binding.progressBar.visibility = View.GONE
                     
                     if (response.isSuccessful && response.body()?.success == true) {
                         val data = response.body()?.data ?: emptyList()
+                        
+                        android.util.Log.d("BukuKategori", "Data received: ${data.size} books")
                         
                         // Filter berdasarkan kategori atau popular
                         allBuku = if (isPopular) {
@@ -158,14 +164,42 @@ class BukuKategoriActivity : BaseActivity() {
                             showEmptyState(true)
                         }
                     } else {
-                        showError("Gagal memuat data buku")
+                        val errorBody = response.errorBody()?.string()
+                        android.util.Log.e("BukuKategori", "API Error: $errorBody")
+                        showError("Gagal memuat data: ${response.message()}")
                     }
                 }
                 
-            } catch (e: Exception) {
+            } catch (e: java.net.UnknownHostException) {
+                android.util.Log.e("BukuKategori", "UnknownHostException: ${e.message}", e)
                 withContext(Dispatchers.Main) {
                     binding.progressBar.visibility = View.GONE
-                    showError("Error: ${e.message}")
+                    showError("❌ Tidak dapat terhubung ke server.\n\nPeriksa:\n• Koneksi internet\n• Domain dapat diakses\n• VPN aktif (jika diperlukan)")
+                }
+            } catch (e: java.net.ConnectException) {
+                android.util.Log.e("BukuKategori", "ConnectException: ${e.message}", e)
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = View.GONE
+                    showError("❌ Koneksi ditolak.\n\nServer mungkin down atau alamat salah.")
+                }
+            } catch (e: javax.net.ssl.SSLHandshakeException) {
+                android.util.Log.e("BukuKategori", "SSLHandshakeException: ${e.message}", e)
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = View.GONE
+                    showError("❌ SSL Error.\n\nSertifikat SSL bermasalah.")
+                }
+            } catch (e: java.net.SocketTimeoutException) {
+                android.util.Log.e("BukuKategori", "SocketTimeoutException: ${e.message}", e)
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = View.GONE
+                    showError("❌ Timeout.\n\nServer terlalu lama merespons.")
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("BukuKategori", "Exception: ${e.message}", e)
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = View.GONE
+                    showError("❌ ERROR: Failed to fetch\n\n${e.javaClass.simpleName}:\n${e.message}\n\nCek Logcat untuk detail.")
                 }
             }
         }
