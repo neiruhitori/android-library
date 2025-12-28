@@ -16,7 +16,13 @@ data class Buku(
     val tipe: String, // enum: harian, tahunan
     
     @SerializedName("tahun_terbit")
-    val tahunTerbit: Int,
+    val tahunTerbit: String?,  // Changed to String? karena dari API bisa null atau string
+    
+    @SerializedName("isbn")
+    val isbn: String?,
+    
+    @SerializedName("kota_cetak")
+    val kotaCetak: String?,
     
     @SerializedName("description")
     val description: String,

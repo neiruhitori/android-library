@@ -57,9 +57,29 @@ class DetailBukuActivity : BaseActivity() {
                         // Set data to views
                         binding.tvBukuJudul.text = buku.judul
                         binding.tvBukuPenulis.text = buku.penulis
-                        binding.tvBukuTahun.text = buku.tahunTerbit.toString()
+                        binding.tvBukuTahun.text = buku.tahunTerbit ?: "-"
                         binding.tvBukuTipe.text = buku.tipe.replaceFirstChar { it.uppercase() }
                         binding.tvBukuDescription.text = buku.description
+                        
+                        // Set ISBN if available
+                        if (!buku.isbn.isNullOrEmpty()) {
+                            binding.tvBukuIsbn.text = buku.isbn
+                            binding.layoutIsbn.visibility = View.VISIBLE
+                            binding.dividerIsbn.visibility = View.VISIBLE
+                        } else {
+                            binding.layoutIsbn.visibility = View.GONE
+                            binding.dividerIsbn.visibility = View.GONE
+                        }
+                        
+                        // Set Kota Cetak if available
+                        if (!buku.kotaCetak.isNullOrEmpty()) {
+                            binding.tvBukuKotaCetak.text = buku.kotaCetak
+                            binding.layoutKotaCetak.visibility = View.VISIBLE
+                            binding.dividerKotaCetak.visibility = View.VISIBLE
+                        } else {
+                            binding.layoutKotaCetak.visibility = View.GONE
+                            binding.dividerKotaCetak.visibility = View.GONE
+                        }
                         
                         // Set stock information
                         binding.tvTotalStok.text = "${buku.stok} buku"

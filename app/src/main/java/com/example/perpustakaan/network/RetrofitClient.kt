@@ -16,9 +16,12 @@ object RetrofitClient {
     private const val BASE_URL = "https://perpustakaan-smpn2klakah.my.id/"
     
     // Untuk testing lokal, uncomment salah satu dibawah:
-    // private const val BASE_URL = "http://192.168.137.1:8000/"  // IP WiFi komputer - untuk LDPlayer
-    // private const val BASE_URL = "http://10.0.2.2:8000/"  // Untuk emulator standar
-    // private const val BASE_URL = "http://172.20.10.3:8000/"  // IP WiFi lainnya 
+//    private const val BASE_URL = "http://192.168.1.3:8000/"  // IP WiFi komputer - sesuaikan dengan IP komputer
+    // private const val BASE_URL = "http://192.168.137.1:8000/"  // IP Hotspot alternatif
+    // private const val BASE_URL = "http://10.0.2.2:8000/"  // Untuk emulator Android Studio
+    
+    // CATATAN: Pastikan server Laravel dijalankan dengan:
+    // php artisan serve --host=0.0.0.0 --port=8000 
     
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
