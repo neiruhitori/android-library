@@ -61,6 +61,16 @@ class DetailBukuActivity : BaseActivity() {
                         binding.tvBukuTipe.text = buku.tipe.replaceFirstChar { it.uppercase() }
                         binding.tvBukuDescription.text = buku.description
                         
+                        // Set Kelas untuk buku tahunan
+                        if (buku.tipe == "tahunan" && !buku.kelas.isNullOrEmpty()) {
+                            binding.tvBukuKelas.text = "Kelas ${buku.kelas}"
+                            binding.layoutKelas.visibility = View.VISIBLE
+                            binding.dividerKelas.visibility = View.VISIBLE
+                        } else {
+                            binding.layoutKelas.visibility = View.GONE
+                            binding.dividerKelas.visibility = View.GONE
+                        }
+                        
                         // Set ISBN if available
                         if (!buku.isbn.isNullOrEmpty()) {
                             binding.tvBukuIsbn.text = buku.isbn

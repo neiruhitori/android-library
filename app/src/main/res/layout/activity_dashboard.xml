@@ -75,122 +75,302 @@
             android:padding="24dp"
             android:gravity="center">
 
-            <!-- Welcome Text -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pilih Kategori Buku"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="8dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Silakan pilih kategori buku yang ingin dilihat"
-                android:textSize="14sp"
-                android:textColor="@color/text_secondary"
-                android:layout_marginBottom="40dp"
-                android:gravity="center" />
-
-            <!-- Card Button Harian -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardHarian"
+            <!-- Info Siswa yang Login (Hidden by default) -->
+            <LinearLayout
+                android:id="@+id/layoutSiswaInfo"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginBottom="20dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_gradient_blue"
+                android:padding="16dp"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/bg_gradient_blue"
-                    android:padding="24dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Siswa yang Login:"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:alpha="0.8" />
 
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@android:drawable/star_on"
-                        android:tint="@color/white"
-                        android:contentDescription="Harian Icon" />
+                <TextView
+                    android:id="@+id/tvSiswaInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama Siswa - Kelas"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="4dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Buku Harian"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:layout_marginTop="16dp" />
+                <Button
+                    android:id="@+id/btnLogoutSiswa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:textSize="12sp"
+                    android:backgroundTint="@color/white"
+                    android:textColor="@color/blue_primary"
+                    android:layout_marginTop="8dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lihat koleksi buku harian"
-                        android:textSize="13sp"
-                        android:textColor="@color/white"
-                        android:alpha="0.9"
-                        android:layout_marginTop="4dp" />
+            </LinearLayout>
 
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Card Button Tahunan -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardTahunan"
+            <!-- Layout Metode Peminjaman (Visible by default) -->
+            <LinearLayout
+                android:id="@+id/layoutMetodePeminjaman"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="8dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
 
-                <LinearLayout
+                <!-- Welcome Text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pilih Metode Identifikasi"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Silakan pilih cara untuk identifikasi siswa"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginBottom="40dp"
+                    android:gravity="center" />
+
+                <!-- Card Button QR Scanner -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardQRScan"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/bg_gradient_orange"
-                    android:padding="24dp">
+                    android:layout_height="180dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:src="@android:drawable/ic_menu_recent_history"
-                        android:tint="@color/white"
-                        android:contentDescription="Tahunan Icon" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_gradient_blue"
+                        android:padding="24dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Buku Tahunan"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:layout_marginTop="16dp" />
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@android:drawable/ic_menu_camera"
+                            android:tint="@color/white"
+                            android:contentDescription="QR Scanner Icon" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lihat koleksi buku tahunan"
-                        android:textSize="13sp"
-                        android:textColor="@color/white"
-                        android:alpha="0.9"
-                        android:layout_marginTop="4dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scan QR Code"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_marginTop="16dp" />
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pindai kartu pelajar siswa"
+                            android:textSize="13sp"
+                            android:textColor="@color/white"
+                            android:alpha="0.9"
+                            android:layout_marginTop="4dp" />
 
-            </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card Button Manual Input -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardManualInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_gradient_orange"
+                        android:padding="24dp">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@android:drawable/ic_menu_edit"
+                            android:tint="@color/white"
+                            android:contentDescription="Manual Input Icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Input Manual"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_marginTop="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pilih siswa dari daftar"
+                            android:textSize="13sp"
+                            android:textColor="@color/white"
+                            android:alpha="0.9"
+                            android:layout_marginTop="4dp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Layout Pilih Buku (Hidden by default) -->
+            <LinearLayout
+                android:id="@+id/layoutPilihBuku"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <!-- Welcome Text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pilih Kategori Buku"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Silakan pilih kategori buku yang ingin dilihat"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginBottom="40dp"
+                    android:gravity="center" />
+
+                <!-- Card Button Harian -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardHarian"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_gradient_blue"
+                        android:padding="24dp">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@android:drawable/star_on"
+                            android:tint="@color/white"
+                            android:contentDescription="Harian Icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Buku Harian"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_marginTop="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lihat koleksi buku harian"
+                            android:textSize="13sp"
+                            android:textColor="@color/white"
+                            android:alpha="0.9"
+                            android:layout_marginTop="4dp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card Button Tahunan -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTahunan"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/bg_gradient_orange"
+                        android:padding="24dp">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@android:drawable/ic_menu_recent_history"
+                            android:tint="@color/white"
+                            android:contentDescription="Tahunan Icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Buku Tahunan"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_marginTop="16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lihat koleksi buku tahunan"
+                            android:textSize="13sp"
+                            android:textColor="@color/white"
+                            android:alpha="0.9"
+                            android:layout_marginTop="4dp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
 
         </LinearLayout>
 

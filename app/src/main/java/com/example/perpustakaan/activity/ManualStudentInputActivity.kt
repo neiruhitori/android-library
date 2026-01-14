@@ -80,12 +80,22 @@ class ManualStudentInputActivity : BaseActivity() {
     private fun setupListeners() {
         binding.btnProceed.setOnClickListener {
             selectedSiswa?.let { siswa ->
-                val intent = Intent(this, CheckoutActivity::class.java)
-                intent.putExtra("SISWA_ID", siswa.id)
-                intent.putExtra("SISWA_NAME", siswa.name)
-                intent.putExtra("SISWA_KELAS", siswa.kelas)
-                intent.putExtra("SISWA_NISN", siswa.nisn)
-                startActivity(intent)
+                // Simpan data siswa ke session
+                com.example.perpustakaan.util.SessionManager.saveSiswaSession(
+                    this,
+                    siswa.id,
+                    siswa.name,
+                    siswa.kelas,
+                    siswa.nisn
+                )
+                
+                Toast.makeText(
+                    this,
+                    "Login berhasil! Selamat datang ${siswa.name}",
+                    Toast.LENGTH_SHORT
+                ).show()
+                
+                // Kembali ke dashboard
                 finish()
             }
         }

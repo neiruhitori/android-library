@@ -319,6 +319,51 @@
                         android:layout_marginBottom="12dp"
                         android:visibility="gone" />
 
+                    <!-- Kelas (untuk buku tahunan) -->
+                    <LinearLayout
+                        android:id="@+id/layoutKelas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_agenda"
+                            android:tint="@color/blue_primary"
+                            android:contentDescription="Class Icon" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Kelas"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_secondary"
+                            android:layout_marginStart="12dp" />
+
+                        <TextView
+                            android:id="@+id/tvBukuKelas"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textSize="14sp"
+                            android:textColor="@color/text_primary"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/dividerKelas"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F0F0F0"
+                        android:layout_marginBottom="12dp"
+                        android:visibility="gone" />
+
                     <!-- Tipe Buku -->
                     <LinearLayout
                         android:layout_width="match_parent"

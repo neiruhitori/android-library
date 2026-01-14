@@ -62,7 +62,8 @@ object CartManager {
     fun setSelectedKodeBuku(bukuId: Int, kodeBukuList: List<KodeBuku>) {
         val item = cartItems.find { it.buku.id == bukuId }
         item?.selectedKodeBuku = kodeBukuList.toMutableList()
-        notifyListeners()
+        // JANGAN panggil notifyListeners() disini - ini hanya update internal data
+        // notifyListeners() hanya diperlukan untuk update UI cart count/items
     }
     
     fun getSelectedKodeBuku(bukuId: Int): List<KodeBuku> {

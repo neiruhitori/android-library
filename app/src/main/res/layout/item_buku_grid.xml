@@ -111,6 +111,23 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:layout_marginTop="4dp" />
+                
+            <!-- Kelas (untuk buku tahunan) -->
+            <TextView
+                android:id="@+id/tvBukuKelas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kelas 7"
+                android:textSize="10sp"
+                android:textColor="@color/orange_accent"
+                android:textStyle="bold"
+                android:background="@color/category_bg_2"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_marginTop="4dp"
+                android:visibility="gone" />
 
             <!-- Info Row -->
             <LinearLayout

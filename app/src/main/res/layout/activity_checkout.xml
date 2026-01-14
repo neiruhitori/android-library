@@ -99,6 +99,41 @@
                                 android:textSize="13sp"
                                 android:textColor="@color/text_secondary"
                                 android:layout_marginTop="2dp" />
+                                
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="8dp">
+                                
+                                <TextView
+                                    android:id="@+id/tvStudentAbsen"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:text="Absen: -"
+                                    android:textSize="11sp"
+                                    android:textColor="@color/text_hint" />
+                                    
+                                <TextView
+                                    android:id="@+id/tvStudentJenisKelamin"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="L/P"
+                                    android:textSize="11sp"
+                                    android:textColor="@color/text_hint"
+                                    android:layout_marginStart="8dp" />
+                                    
+                            </LinearLayout>
+                            
+                            <TextView
+                                android:id="@+id/tvStudentAgama"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Agama: -"
+                                android:textSize="11sp"
+                                android:textColor="@color/text_hint"
+                                android:layout_marginTop="2dp" />
 
                         </LinearLayout>
 

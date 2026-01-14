@@ -172,7 +172,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPrevPage"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Previous"
@@ -194,7 +194,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnNextPage"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Next"

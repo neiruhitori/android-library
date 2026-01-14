@@ -134,16 +134,22 @@ class QRScannerActivity : BaseActivity() {
 
     private fun processQRCode(qrContent: String) {
         try {
-            // QR Code berisi JSON dengan format: {"id": 123}
+            // Coba parse sebagai JSON dulu: {"id": 123}
             val jsonObject = JSONObject(qrContent)
             val siswaId = jsonObject.getInt("id")
             
             // Fetch siswa data from API
             fetchSiswaData(siswaId)
             
-        } catch (e: Exception) {
-            Toast.makeText(this, "QR Code tidak valid", Toast.LENGTH_SHORT).show()
-            isScanning = true
+        } catch (jsonException: Exception) {
+            // Jika bukan JSON, coba parse sebagai ID langsung (plain text)
+            try {
+                val siswaId = qrContent.trim().toInt()
+                fetchSiswaData(siswaId)
+            } catch (numberException: Exception) {
+                Toast.makeText(this, "QR Code tidak valid: $qrContent", Toast.LENGTH_LONG).show()
+                isScanning = true
+            }
         }
     }
 
@@ -158,13 +164,22 @@ class QRScannerActivity : BaseActivity() {
                     if (siswaResponse.success) {
                         val siswa = siswaResponse.data
                         
-                        // Navigate to checkout with siswa data
-                        val intent = Intent(this@QRScannerActivity, CheckoutActivity::class.java)
-                        intent.putExtra("SISWA_ID", siswa.id)
-                        intent.putExtra("SISWA_NAME", siswa.name)
-                        intent.putExtra("SISWA_KELAS", siswa.kelas)
-                        intent.putExtra("SISWA_NISN", siswa.nisn)
-                        startActivity(intent)
+                        // Simpan data siswa ke session
+                        com.example.perpustakaan.util.SessionManager.saveSiswaSession(
+                            this@QRScannerActivity,
+                            siswa.id,
+                            siswa.name,
+                            siswa.kelas,
+                            siswa.nisn
+                        )
+                        
+                        Toast.makeText(
+                            this@QRScannerActivity,
+                            "Login berhasil! Selamat datang ${siswa.name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        
+                        // Kembali ke dashboard
                         finish()
                     } else {
                         Toast.makeText(

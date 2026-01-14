@@ -14,6 +14,7 @@ class BookCodeAdapter(
     private val selectedCodes = mutableSetOf<Int>()
 
     fun updateBookCodes(newCodes: List<KodeBuku>) {
+        android.util.Log.d("BookCodeAdapter", "Updating book codes: ${newCodes.size} items")
         bookCodes = newCodes
         notifyDataSetChanged()
     }
@@ -53,7 +54,13 @@ class BookCodeAdapter(
                 tvStatus.text = kodeBuku.status.replaceFirstChar { it.uppercase() }
                 
                 val isSelected = selectedCodes.contains(kodeBuku.id)
+                
+                android.util.Log.d("BookCodeAdapter", "Binding ${kodeBuku.kodeBuku}, selected: $isSelected, position: $adapterPosition")
+                
+                // Update checkbox state tanpa trigger listener
+                checkbox.setOnCheckedChangeListener(null)
                 checkbox.isChecked = isSelected
+                checkbox.visibility = android.view.View.VISIBLE // Pastikan checkbox visible
 
                 // Disable if max selection reached and this item is not selected
                 val canSelect = selectedCodes.size < maxSelection || isSelected
@@ -61,17 +68,25 @@ class BookCodeAdapter(
                 root.isEnabled = canSelect
                 root.alpha = if (canSelect) 1.0f else 0.5f
 
-                checkbox.setOnCheckedChangeListener(null)
+                // Set listener untuk checkbox
                 checkbox.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
                         if (selectedCodes.size < maxSelection) {
                             selectedCodes.add(kodeBuku.id)
-                            notifyDataSetChanged()
+                            // Hanya notify item yang berubah, bukan semua
+                            notifyItemChanged(adapterPosition)
+                            // Update items yang mungkin terpengaruh (enable/disable)
+                            if (selectedCodes.size == maxSelection) {
+                                notifyDataSetChanged()
+                            }
                         } else {
                             checkbox.isChecked = false
                         }
                     } else {
                         selectedCodes.remove(kodeBuku.id)
+                        // Notify perubahan
+                        notifyItemChanged(adapterPosition)
+                        // Update semua item karena ada yang bisa di-enable lagi
                         notifyDataSetChanged()
                     }
                 }

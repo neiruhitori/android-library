@@ -15,6 +15,15 @@ data class Siswa(
     @SerializedName("kelas")
     val kelas: String,
     
+    @SerializedName("absen")
+    val absen: String?,
+    
+    @SerializedName("jenis_kelamin")
+    val jenisKelamin: String?,
+    
+    @SerializedName("agama")
+    val agama: String?,
+    
     @SerializedName("created_at")
     val createdAt: String?,
     

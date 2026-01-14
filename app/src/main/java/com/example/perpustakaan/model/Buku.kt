@@ -15,6 +15,9 @@ data class Buku(
     @SerializedName("tipe")
     val tipe: String, // enum: harian, tahunan
     
+    @SerializedName("kelas")
+    val kelas: String?, // untuk buku tahunan: 7, 8, 9
+    
     @SerializedName("tahun_terbit")
     val tahunTerbit: String?,  // Changed to String? karena dari API bisa null atau string
     

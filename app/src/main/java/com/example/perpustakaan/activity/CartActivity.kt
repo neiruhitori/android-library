@@ -51,9 +51,26 @@ class CartActivity : BaseActivity(), CartManager.CartUpdateListener {
     private fun setupListeners() {
         binding.btnCheckout.setOnClickListener {
             if (CartManager.getTotalItems() > 0) {
-                // Navigate to student selection (QR or manual)
-                val intent = Intent(this, StudentSelectionActivity::class.java)
-                startActivity(intent)
+                // Cek apakah sudah ada siswa login di session
+                if (com.example.perpustakaan.util.SessionManager.hasSiswaSession(this)) {
+                    // Langsung ke checkout dengan data siswa dari session
+                    val intent = Intent(this, CheckoutActivity::class.java)
+                    intent.putExtra("SISWA_ID", com.example.perpustakaan.util.SessionManager.getSiswaId(this))
+                    intent.putExtra("SISWA_NAME", com.example.perpustakaan.util.SessionManager.getSiswaName(this))
+                    intent.putExtra("SISWA_KELAS", com.example.perpustakaan.util.SessionManager.getSiswaKelas(this))
+                    intent.putExtra("SISWA_NISN", com.example.perpustakaan.util.SessionManager.getSiswaNisn(this))
+                    startActivity(intent)
+                } else {
+                    // Jika belum login, kembali ke dashboard untuk pilih metode
+                    android.widget.Toast.makeText(
+                        this,
+                        "Silakan login dengan QR Code atau input manual terlebih dahulu",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    
+                    val intent = Intent(this, DashboardActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
 

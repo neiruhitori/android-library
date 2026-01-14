@@ -154,7 +154,18 @@ class BukuKategoriActivity : BaseActivity() {
                         allBuku = if (isPopular) {
                             data.sortedByDescending { it.totalPeminjaman }
                         } else {
-                            data.filter { it.tipe == kategori }
+                            var filtered = data.filter { it.tipe == kategori }
+                            
+                            // Untuk buku tahunan, filter berdasarkan kelas siswa yang login
+                            if (kategori == "tahunan") {
+                                val kelasNumber = com.example.perpustakaan.util.SessionManager.getSiswaKelasNumber(this@BukuKategoriActivity)
+                                if (kelasNumber != null) {
+                                    filtered = filtered.filter { it.kelas == kelasNumber }
+                                    android.util.Log.d("BukuKategori", "Filtered by class: $kelasNumber, Result: ${filtered.size} books")
+                                }
+                            }
+                            
+                            filtered
                         }
                         
                         filteredBuku = allBuku

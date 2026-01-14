@@ -47,6 +47,14 @@ class BukuAdapter(
                 tvBukuPenulis.text = buku.penulis
                 tvBukuTahun.text = buku.tahunTerbit.toString()
                 tvBukuTipe.text = buku.tipe.replaceFirstChar { it.uppercase() }
+                
+                // Tampilkan kelas untuk buku tahunan
+                if (buku.tipe == "tahunan" && !buku.kelas.isNullOrEmpty()) {
+                    tvBukuKelas.text = "Kelas ${buku.kelas}"
+                    tvBukuKelas.visibility = View.VISIBLE
+                } else {
+                    tvBukuKelas.visibility = View.GONE
+                }
 
                 // Load image dengan Glide
                 val imageUrl = buku.fotoUrl ?: buku.foto
