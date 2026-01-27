@@ -11,11 +11,24 @@ class BookCodeAdapter(
 ) : RecyclerView.Adapter<BookCodeAdapter.BookCodeViewHolder>() {
 
     private var bookCodes = listOf<KodeBuku>()
+    private var filteredBookCodes = listOf<KodeBuku>()
     private val selectedCodes = mutableSetOf<Int>()
 
     fun updateBookCodes(newCodes: List<KodeBuku>) {
         android.util.Log.d("BookCodeAdapter", "Updating book codes: ${newCodes.size} items")
         bookCodes = newCodes
+        filteredBookCodes = newCodes
+        notifyDataSetChanged()
+    }
+
+    fun filter(query: String) {
+        filteredBookCodes = if (query.isEmpty()) {
+            bookCodes
+        } else {
+            bookCodes.filter { 
+                it.kodeBuku.contains(query, ignoreCase = true)
+            }
+        }
         notifyDataSetChanged()
     }
 
@@ -39,10 +52,10 @@ class BookCodeAdapter(
     }
 
     override fun onBindViewHolder(holder: BookCodeViewHolder, position: Int) {
-        holder.bind(bookCodes[position])
+        holder.bind(filteredBookCodes[position])
     }
 
-    override fun getItemCount() = bookCodes.size
+    override fun getItemCount() = filteredBookCodes.size
 
     inner class BookCodeViewHolder(
         private val binding: ItemBookCodeBinding

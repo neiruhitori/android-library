@@ -30,7 +30,33 @@
         android:text="Pilih kode buku yang akan dipinjam"
         android:textSize="13sp"
         android:textColor="@color/text_secondary"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="12dp" />
+
+    <!-- Search Box -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:visibility="gone"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:startIconDrawable="@android:drawable/ic_menu_search"
+        app:endIconMode="clear_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSearchCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Cari kode buku..."
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Loading -->
     <ProgressBar

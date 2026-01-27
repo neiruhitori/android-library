@@ -7,6 +7,8 @@ import android.os.Looper
 import android.view.MotionEvent
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.example.perpustakaan.network.CartManager
+import com.example.perpustakaan.util.SessionManager
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -62,6 +64,10 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     private fun showIdleSplashScreen() {
+        // Clear cart dan session sebelum ke idle splash
+        CartManager.clearCart()
+        SessionManager.clearSiswaSession(this)
+        
         val intent = Intent(this, IdleSplashActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)

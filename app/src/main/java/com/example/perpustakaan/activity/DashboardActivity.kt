@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
 import com.example.perpustakaan.databinding.ActivityDashboardBinding
+import com.example.perpustakaan.network.CartManager
 import com.example.perpustakaan.util.SessionManager
 
 class DashboardActivity : BaseActivity() {
@@ -136,6 +137,7 @@ class DashboardActivity : BaseActivity() {
         // Tombol logout siswa
         binding.btnLogoutSiswa.setOnClickListener {
             SessionManager.clearSiswaSession(this)
+            CartManager.clearCart() // Clear cart saat logout
             checkSession()
         }
     }

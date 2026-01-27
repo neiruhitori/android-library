@@ -262,6 +262,15 @@ class CheckoutActivity : BaseActivity() {
         // Set previously selected codes
         bookCodeAdapter.setSelectedCodes(CartManager.getSelectedKodeBuku(cartItem.buku.id))
 
+        // Setup search functionality
+        dialogBinding.etSearchCode.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                bookCodeAdapter.filter(s.toString())
+            }
+        })
+
         // Load book codes from API
         lifecycleScope.launch {
             try {
@@ -274,6 +283,7 @@ class CheckoutActivity : BaseActivity() {
                     
                     if (kodeBukuResponse.success && kodeBukuResponse.data.isNotEmpty()) {
                         android.util.Log.d("CheckoutActivity", "Setting RecyclerView and buttons VISIBLE for buku ${cartItem.buku.id}, codes count: ${kodeBukuResponse.data.size}")
+                        dialogBinding.searchLayout.visibility = View.VISIBLE
                         dialogBinding.rvBookCodes.visibility = View.VISIBLE
                         dialogBinding.layoutButtons.visibility = View.VISIBLE
                         bookCodeAdapter.updateBookCodes(kodeBukuResponse.data)
